@@ -1,0 +1,58 @@
+{% extends "./base.html" %} {% load static %} {% block content %} 
+{% if form.errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  {% for field_errors in form.errors.values %} {% for error in field_errors %}
+  <span>{{ error }}</span>
+  {% endfor %} {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+<div class="col-xl-12 col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h4>Add new auction</h4>
+    </div>
+    <div class="card-body p-4">
+      <form method="post" action="{% url 'add-auction' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group mb-4">
+            <label for="staff">Supervisor *</label>
+            <select
+              class="form-control"
+              name="staff"
+              id="exampleFormControlSelect1"
+            >
+              {% for user in users %}
+              <option value="{{ user.id }}">{{ user.username }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mb-4">
+            <label for="start_at">Start At *</label>
+            <input
+              name="start_at"
+              type="datetime-local"
+              class="form-control"
+              id="start_at"
+            />
+          </div>
+          <div class="form-group mb-5">
+            <label for="start_at">End At *</label>
+            <input
+              name="end_at"
+              type="datetime-local"
+              class="form-control"
+              id="start_at"
+            />
+          </div>
+          <button type="submit" class="btn btn-danger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add auction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

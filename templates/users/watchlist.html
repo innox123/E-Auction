@@ -1,0 +1,134 @@
+{% extends "./userAdminWrapper.html" %} {% load static %} {% block title %}
+watchlist{% endblock title %} {% block main_content%}
+  <div class="col-md-12 mt-3">
+    <h5>My watchlists ( {{ watch_count }} )</h5>
+    <div class="row">
+      <div class="col-md-11">
+        {% for item in items_with_bids %}
+        <div class="row card-border my-2">
+          <div class="col-md-3 mt-1">
+            <img
+              class="rounded product-image"
+              height="120px"
+              width="100%"
+              src="{{ item.item.primary_image.url}}"
+            />
+          </div>
+          <div class="col-md-5 mt-1">
+            <h5>{{ item.item.name }}</h5>
+            <div class="d-flex flex-row">
+              <span>Starting Amount {{ item.item.reverse_price }} RWF</span>
+            </div>
+            <p class="text-justify text-truncate para mb-0">
+              <i class="fa fa-calendar-o"></i> {{ item.item.auction.start_at.date }} ,  {{ item.item.auction.start_at|time:"g:i A" }} END {{ item.item.auction.end_at|time:"g:i A" }}<br />
+            </p>
+          </div>
+
+          <div
+            class="align-items-center align-content-center col-md-4 border-left mt-1"
+          >
+            <div class="d-flex flex-row align-items-center">
+              <p>Current Amount {{ item.bid_amount}} RWF</p>
+            </div>
+            {% if item.item.is_sold %}
+            <h6 class="text-danger">Sold Out</h6>
+            {% else %}
+            <h6 class="text-success">Live Bidding...</h6>
+            {% endif %}
+
+            <div class="d-flex justify-content-center align-items-center">
+              {% if item.item.is_sold %}
+              <button class="btn btn-primary btn-block btn-sm" type="button">
+                Can't View
+              </button>
+              {% else %}
+              <button
+                class="btn btn-primary btn-block btn-sm"
+                type="button"
+              >
+                <a class="text-light" href="{% url 'item-detail' pk=item.item.id %}">Bidding Room</a></button
+              >
+              {% endif %}
+              <form
+                method="post"
+                action="{% url 'remove_item_from_watchlist' item_id=item.item.id %}"
+              >
+                {% csrf_token %}
+
+                <button
+                  class="btn btn-danger btn-block btn-sm ml-2"
+                  type="submit"
+                >
+                  Remove
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% for item in items_without_bids %}
+        <div class="row p-2 bg-white border rounded my-2">
+          <div class="col-md-3 mt-1">
+            <img
+              class="img-fluid img-responsive h-100 rounded product-image"
+              src="{{ item.primary_image.url}}"
+            />
+          </div>
+          <div class="col-md-6 mt-1">
+            <h5>{{ item.name }}</h5>
+            <div class="d-flex flex-row">
+              <span>Starting Amount {{ item.reverse_price }} RWF</span>
+            </div>
+            <p class="text-justify text-truncate para mb-0">
+              Date {{ item.auction.start_at.date }} <br />
+
+              From {{ item.auction.start_at|time:"g:i A" }} To 
+              {{ item.auction.end_at|time:"g:i A" }}
+              <br /><br />
+            </p>
+          </div>
+
+          <div
+            class="align-items-center align-content-center col-md-3 border-left mt-1"
+          >
+            <div class="d-flex flex-row align-items-center">
+              <p>Current Amount {{ item.reverse_price }}RWF</p>
+            </div>
+            {% if item.is_sold %}
+            <h6 class="text-danger">Sold Out</h6>
+            {% endif %}
+            <div class="d-flex flex-column mt-4">
+              {% if item.is_sold %}
+              <button class="btn btn-primary btn-sm" type="button">
+                Can't View
+              </button>
+              {% else %}
+              <a
+                href="{% url 'item-detail' pk=item.id %}"
+                class="btn btn-primary btn-sm"
+                type="button"
+              >
+                Bidding Room</a
+              >
+              {% endif %}
+              <form
+                method="post"
+                action="{% url 'remove_item_from_watchlist' item_id=item.id %}"
+              >
+                {% csrf_token %}
+
+                <button
+                  class="btn btn-outline-danger btn-block btn-sm mt-2"
+                  type="submit"
+                >
+                  Put Out of wishlist
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

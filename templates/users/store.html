@@ -1,0 +1,41 @@
+{% extends "./userAdminWrapper.html" %} 
+{% load static %} 
+{% block title %}Bidding History{% endblock title %}
+{% block main_content%}
+<div class="row my-3 pl-4">
+    <h5>Completed Transactions ( {{ number_of_transactions }} )</h5>
+</div>
+
+    {% for invoice in invoices %}
+    <div class="col-10">
+        <div class="card-border">
+            <div class="card-body pt-3">
+                <div class="widget-49">
+                    <div class="widget-49-title-wrapper">
+                        <div class="widget-49-date-primary">
+                            <span class="widget-49-date-day">{{invoice.transaction.updated_at|date:"d"}}</span>
+                            <span class="widget-49-date-month">{{invoice.transaction.updated_at|date:"F"}}</span>
+                        </div>
+                        <div class="widget-49-meeting-info">
+                            <span class="widget-49-pro-title">INVOICE ID: {{ invoice.id }}</span>
+                            <span class="widget-49-meeting-time">By {{ invoice.transaction.payment_method }} {{ invoice.transaction.amount }} RWF</span>
+                        </div>
+                    </div>
+                    <ol class="widget-49-meeting-points">
+                        <li class="widget-49-meeting-item"><span>{{ invoice.transaction.item.name }}</span></li>
+                        <li class="widget-49-meeting-item"><span>{{ invoice.transaction.item.vehicle_id }}</span></li>
+                        <li class="widget-49-meeting-item"><span>{{ invoice.transaction.item.plate_number}}</span></li>
+                        <li class="widget-49-meeting-item"><span>{{ invoice.transaction.user.first_name }} {{ invoice.transaction.user.last_name }}</span></li>
+                    </ol>
+                    <div class="pt-3">
+                        <a class="btn btn-primary" href="{% url 'generate_invoice' invoice_id=invoice.id %}" target="_blank" ><i class="fa fa-download" aria-hidden="true"></i>
+                            Invoice</a>
+                        <a class="btn btn-success" href="#" >Certificate of sale</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}

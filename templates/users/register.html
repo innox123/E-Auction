@@ -1,0 +1,271 @@
+{% extends "../base.html" %} {% load static %} {% block title %} Create Account
+{% endblock title %} {% block content %} 
+
+
+{% for message in messages %}
+<div
+  class="alert alert-{{message.tags}} alert-dismissible fade show"
+  role="alert"
+>
+  <div class="d-flex align-items-center">
+    {% if message.tags == "error" %}
+    <svg
+      class="text-danger"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    {% elif message.tags == "success" %}
+
+    <svg
+      class="text-success mr-2"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="m10.6 13.8l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.9q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+      />
+    </svg>
+
+    {% endif %}
+    <span class="p-l-10">{{ message }}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+
+{% if form.errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <ol class="pl-4">
+    {% for field_errors in form.errors.values %} 
+      {% for error in field_errors %}
+      <li>{{ error }}</li>
+      {% endfor %} 
+    {% endfor %}
+    </ol>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} 
+
+<!-- MultiStep Form -->
+
+<div class="container" >
+  <div class="row justify-content-center mt-0">
+    <div class="col-11 col-sm-9 col-md-7 col-lg-6 p-0  mb-2">
+      <div class="card pt-4 my-3 card-border">
+        <div class="text-center">
+          <h3><strong>Create new account.</strong></h3>
+          <p>Fill all form field to go to next step</p>
+        </div>
+        <div class="row my-3">
+          <div class="col-md-12 mx-0">
+            <form id="msform" class="pb-4" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+              <!-- progressbar -->
+              <ul class="text-center px-0" id="progressbar">
+                <li class="active" id="account"><strong>Account</strong></li>
+                <li id="personal"><strong>Personal</strong></li>
+                <li id="confirm"><strong>Finish</strong></li>
+              </ul>
+              <!-- fieldsets -->
+              <fieldset>
+                <div class="my-3 px-5">
+                  <h2 class="h5">Account Informations</h2>
+                  <div class="row mt-3">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="username"
+                          >Username <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="username"
+                          placeholder="username"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="phone_number"
+                          >Phone Number(+250)
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="phone_number"
+                          placeholder="(+250)"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password"
+                      >Password <span class="text-danger">*</span></label
+                    >
+                    <input
+                      class="form-control"
+                      type="password"
+                      name="password1"
+                      placeholder="password"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="password"
+                      >Confirm Password
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      class="form-control"
+                      type="password"
+                      name="password2"
+                      placeholder="password"
+                      required
+                    />
+                  </div>
+                </div>
+                <input
+                  type="button"
+                  name="next"
+                  class="next btn btn-primary mt-3 btn-sm mx-5 action-button"
+                  value="Next Step"
+                />
+              </fieldset>
+              <fieldset>
+                <div class="my-3 px-5">
+                  <h2 class="h5">Personal Informations</h2>
+                  <div class="row mt-3">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="first_name"
+                          >First Name <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="first_name"
+                          placeholder="First name"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="last_name"
+                          >Last Name <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="last_name"
+                          placeholder="last name"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="address"
+                      >Address <span class="text-danger">*</span></label
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="address"
+                      required
+                      placeholder="Kigali Kacyiru Kacyiru I"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="password"
+                      >Upload National ID (.pdf,jpg,png)
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      class="form-control"
+                      type="file"
+                      name="id_card"
+                      required
+                    />
+                  </div>
+                </div>
+                <input
+                  type="button"
+                  name="previous"
+                  class="previous btn btn-primary mt-3 btn-sm ml-5 action-button-previous"
+                  value="Previous"
+                />
+                <input
+                  type="button"
+                  name="next"
+                  class="next btn btn-primary mt-3 btn-sm mx-0 action-button"
+                  value="Next Step"
+                />
+              </fieldset>
+              <fieldset>
+                   <div class="my-3 px-5 justify-content-center">
+                  <h2 class="h5 text-center">Confirm Account Creation.</h2>
+                  <p class="text-center">After submiting verification code is sent to your provided Phone Number
+                      Remember code is valid in 2 Minutes.
+                  </p>
+                </div>
+                <div class="d-flex justify-content-center">
+                <button type="button" id="reset" class="btn btn-primary btn-block ml-2 mt-3 btn-sm">Reset Form</button>
+                <button type="submit" id="registerSubmit" class="btn btn-success ml-2 mt-3 btn-block btn-sm">
+                      <div class="d-inline-flex justify-content-center align-items-center">
+                        <span id="btn-content">Create Account</span> <div class="loader"></div>
+                    </div>
+                </button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{% static 'js/form.js' %}"></script>
+{% endblock scripts %}

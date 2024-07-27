@@ -1,0 +1,113 @@
+{% extends "../base.html" %} {% load static %} {% block title%}Vehicle Details
+| Bidding Room{%endblock title %} {% block content %}
+
+<div class="container mt-2">
+  <div class="d-flex align-items-center pt-2 pb-4">
+    <a href="{% url 'home' %}">Home</a> &nbsp; / &nbsp;
+    <a href="{% url 'all-items' auction_id=item.auction.id %}">Vehicle store</a> &nbsp; / &nbsp;
+    <a >{{ item.name }}</a>
+  </div>
+  <!-- [ breadcrumb ] end -->
+   <div class="card-border">
+  <div class="row p-3">
+    <div class="col-md-6 mt-4 mt-lg-0 px-4 px-md-5">
+      <div class="main-description px-2">
+        HEAD TO CLOSE
+        <div id="countdown"></div>
+        <div class="price-area my-2">
+          <span class="text-primary"
+            >LIVE TOP BIDDER : <span class="pl-2 text-capitarize h5" id="top-bidder-username"
+              >
+              
+              <i class="fa fa-user-o" aria-hidden="true"></i>
+              {{ bid.user.username }}
+            </span>
+          </span>
+          <p class="old-price my-2">
+            <span class="old-price-discount text-danger"
+              >( <span class="number">{{ number_of_bids }}</span> Bids. )</span
+            >
+          </p>
+
+          <p class="new-price text-bold mb-1 f-30 f-w-500">
+            <span style="font-weight: 600;" class="h5" id="current-bidded-amount"> {{ bid.amount }}</span> RWF
+            <br />
+          </p>
+          <p class="text-secondary">(Current Bidded Amount)</p>
+        </div>
+        <div class="">
+          <div class="form-group">
+            <label for="amount"
+              >Amount Must be in <strong>{{item.min_price}} RWF</strong> and 
+              <strong> {{item.max_price}} RWF</strong>
+            </label>
+            <input
+              class="form-control"
+              type="number"
+              placeholder="RWF"
+              id="amount"
+              required
+            />
+            <span
+              style="display: none"
+              class="text-danger f-15 item-detail-field-error"
+              >Placed amount must follow Bidding price conditions.</span
+            >
+          </div>
+               <p class="justify">
+                Ensure that the value you intend to bid is within your 
+                budget and aligns with the item's worth. Placing bids beyond your means 
+                may result in financial strain or disappointment if you win the auction. 
+              </p>
+          <div class="ps-1 pt-3">
+            {% if condition_to_bid %}
+            <button id="place-bid" class="btn btn-primary btn-block">
+              <span class="event-on-bidding">Place Bid Now</span>
+            </button>
+            {% else %}
+            <button id="place-bid" class="btn btn-primary btn-block" disabled>
+              <span class="event-on-bidding">Unfulfilled conditions to Bid</span
+              ><i class="bi bi-exclamation-triangle-fill p-l-5"></i>
+            </button>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="col-md-6 mt-3 mt-md-0 bg-light px-0 px-md-4">
+          <h5 class="mb-4 text-primary bg-white d-inline-block p-2">Live Bidding Process ...</h5>
+          <ul class="list-group message-body  rounded-2">
+            {% for bid in bids %}
+              {% if bid.user.username == user.username %}
+            <li class="list-group-item d-flex bg-primary text-light justify-content-between align-items-center mb-2">
+              <span><i class="fa fa-user-o mr-2" aria-hidden="true"></i>{{ bid.user.username}}</span>
+               
+              <span class="badge badge-primary badge-pill"><i class="fa fa-plus" aria-hidden="true"></i>
+              {{ bid.amount }} RWF</span>
+            </li>
+            {% else %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+              <span><i class="fa fa-user-o mr-2" aria-hidden="true"></i>{{ bid.user.username}}</span>
+               
+              <span class="badge badge-warning badge-pill"><i class="fa fa-plus" aria-hidden="true"></i>
+          {{ bid.amount }} RWF</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+    </div>
+  </div>
+ </div>
+</div>
+
+{{ item.id|json_script:"item_id" }} 
+{{ request.user.username|json_script:"username" }} 
+{{ item.auction.start_at|json_script:"start_at" }} 
+{{ item.auction.end_at|json_script:"end_at" }} 
+{{ item.max_price|json_script:"max_price" }} 
+{{ item.min_price|json_script:"min_price" }} 
+{% endblock content %} 
+
+{% block scripts %}
+<script src="{% static '/js/item_details.js'%}" defer></script>
+{% endblock scripts %}

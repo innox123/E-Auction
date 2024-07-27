@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      ul li {
+        list-style: none;
+      }
+
+      .invoice-id {
+        text-transform: uppercase;
+      }
+      .invoice-table {
+        /* Styles for the table */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th, td {
+        text-align: start;
+      }
+
+
+      .invoice-table th,
+      .invoice-table td {
+        /* Styles for table cells */
+        border: 1px solid #000;
+        padding: 5px;;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <strong>Rwanda National Police</strong> <br />
+        Online Auction <br />
+        +250 788 311 155 <br />
+        info@police.gov.rw
+
+        <h4>
+          Invoice with {{ invoice.transaction.payment_method}} <br />
+          <span class="invoice-id">NO: {{invoice.id}} </span><br />
+          Date: {{invoice.issued_at}}
+        </h4>
+      </div>
+      <hr />
+
+      <!-- end of header -->
+      <div>
+        <table>
+          <thead>
+            <tr >
+              <th>Company Details</th>
+              <th>Customer Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Rwanda National Police <br />
+                Online Auction <br />
+                Kigali Kacyiru <br />
+                +250 788 311 155 <br />
+                info@police.gov.rw
+              </td>
+              <td>
+                  {{ invoice.transaction.user.first_name}} {{invoice.transaction.user.last_name}} <br />
+                  {{ invoice.transaction.user.address}} <br />
+                  {{ invoice.transaction.user.phone_number}} <br />
+                  {{ invoice.transaction.user.email}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- End of introductions -->
+      <div class="table-section">
+        <h5>vehicle Details</h5>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+               <th>Name</th>
+              <th>Vin</th>
+              <th>Initial cost</th>
+              <th>Used Time</th>
+              <th>Auction start</th>
+              <th>Auction End</th>
+              <th>Supervisor</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ invoice.transaction.item.name}}</td>
+              <td>{{ invoice.transaction.item.vehicle_id}}</td>
+              <td>{{invoice.transaction.item.reverse_price}} RWF</td>
+               <td>{{invoice.transaction.item.used_date}} </td>
+              <td>
+                {{ invoice.transaction.item.auction.start_at.date }}
+                <br />
+                <small
+                  >{{invoice.transaction.item.auction.start_at|time:"H:i"}}</small
+                >
+              </td>
+              <td>
+                {{ invoice.transaction.item.auction.end_at.date }}
+                <br />
+                <small
+                  >{{invoice.transaction.item.auction.end_at|time:"H:i"}}</small
+                >
+              </td>
+              <td>{{ invoice.transaction.item.auction.staff }}</td>
+              <td><strong>{{invoice.transaction.amount}} RWF</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- end of table -->
+
+      <div>
+        <h4>
+          <i>Comments / Notes</i> <br />
+          {{ invoice.description}}
+          <hr />
+        </h4>
+
+        <div>
+          <h5>Payment Method <br>
+             <small>
+            {{ invoice.transaction.payment_method }} -
+            {{invoice.transaction.user.phone_number}}
+             </small>
+          </h5>
+        </div>
+        <div>
+          <h5>Picking Place<br>
+             <small>
+            {{ invoice.transaction.item.location }} -
+             </small>
+          </h5>
+        </div>
+
+        <div>
+          <h5>Signature <br>
+            .....................
+          </h5>
+         
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        Thank you for choosing our services.
+        <br />
+        We hope to see you again soon
+        <br />
+        <strong>~Administrations~</strong>
+      </div>
+    </div>
+  </body>
+</html>

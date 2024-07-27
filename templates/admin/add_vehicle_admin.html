@@ -1,0 +1,81 @@
+{% extends "./base.html" %} {% load static %} {% block content %} 
+<div class="col-xl-12 col-md-12">
+  <div class="card table-card">
+    <div class="card-header">
+        ADD NEW CAPTURED VEHICLE 
+    </div>
+    <div class="card-body p-4">
+                <form
+          action="{% url 'add-vehicle' %}"
+          method="post"
+        >
+          {% csrf_token %}
+          <div class="form-group mb-5">
+            <label class="floating-label" for="name">Vehicle Name *</label>
+            <input name="vehicle_name" type="text" class="form-control" id="name" />
+          </div>
+          <div class="form-group mb-5">
+            <label class="floating-label" for="name">Owner Full Name *</label>
+            <input name="owner_name" type="text" class="form-control" id="name" />
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-5">
+                <label class="floating-label" for="vehicle_id"
+                  >Plate Number *</label
+                >
+                <input
+                  name="plate_number"
+                  type="text"
+                  class="form-control"
+                  id="vehicle_id"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-5">
+                <label class="floating-label" for="location"
+                  >Police Station Location *</label
+                >
+                <input
+                  name="location"
+                  type="text"
+                  class="form-control"
+                  id="plate_number"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-5">
+            <label class="floating-label" for="charged_amount"
+              >Captured On *</label
+            >
+            <input
+              name="captured_on"
+              type="date"
+              class="form-control"
+              id="captured_on"
+              required
+            />
+          </div>
+              <div class="form-group mb-5">
+                <label class="floating-label" for="charged_amount"
+                  >charged_amount *</label
+                >
+                <input
+                  name="charged_amount"
+                  type="text"
+                  class="form-control"
+                  id="charged_amount"
+                  required
+                />
+              </div>
+            <button class="btn btn-danger" type="submit">Cancel</button>
+          <button class="btn btn-primary" type="submit">Add Vehicle</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

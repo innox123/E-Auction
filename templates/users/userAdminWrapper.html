@@ -1,0 +1,124 @@
+{% extends "../base.html" %} {% load static %} {% block title %} Account
+Settings {% endblock title %} {% block content %} {% for message in messages %}
+<div
+  class="alert alert-{{message.tags}} f-14 alert-dismissible fade show"
+  role="alert"
+>
+  <div class="d-flex align-items-center">
+    {% if message.tags == "error" %}
+    <svg
+      class="text-danger mr-2"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.1em"
+      height="1.1em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    {% elif message.tags == "success" %}
+
+    <svg
+      class="text-success"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.2em"
+      height="1.2em"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="m10.6 13.8l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.9q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+      />
+    </svg>
+
+    {% endif %}
+    <span class="pl-2">{{ message }}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+<div class="container my-3">
+  <div class="row">
+    <div class="col-md-2 ">
+      <div class="d-flex flex-column mt-2  side-bar-side">
+        <a class="mb-3" href="{% url 'home' %}">Back Home</a>
+        <a
+          class="mb-3 {% if request.path == '/account/dashboard/' %} border-left-primary text-primary bg-light{% endif %}"
+          href="{% url 'dashboard' %}"
+        >
+          Dashboard 
+ </a
+        >
+        <a
+          class="mb-3 {% if request.path == '/account/watchlist/' %} border-left-primary text-primary bg-light {% endif %}"
+          href="{% url 'watchlist' %}"
+        >
+          Wishlists
+          <span class="badge text-light bg-danger">{{ watch_count }}</span>
+        </a>
+        <a
+          class="mb-3 {% if request.path == '/account/store/' %} border-left-primary text-primary bg-gray-200 {% endif %}"
+          href="{% url 'store' %}"
+          >My Store</a
+        >
+        <a
+          class="mb-3 {% if request.path == '/account/bid_history/' %} border-left-primary text-primary bg-light {% endif %}"
+          href="{% url 'bid-history' %}"
+          >Bid History
+        </a>
+        <a
+          class="mb-3 {% if request.path == '/account/notification/' %} border-left-primary text-primary bg-light {% endif %}"
+          href="{% url 'notification' %}"
+        >
+          Notifications
+          <span class="badge text-light bg-danger">{{ user_notif_count }}</span>
+        </a>
+        <a
+          class="mb-3 {% if request.path == '/account/profile/' %}border-left-primary text-primary bg-light {% endif %}"
+          href="{% url 'profile' %}"
+          >Profile Settings</a
+        >
+        <a
+          class="mb-3 {% if request.path == '/account/settings/' %} border-left-primary text-primary bg-light{% endif %}"
+          href="{% url 'settings' %}"
+          >Account Settings</a
+        >
+        <a class="mb-3" href="{% url 'logout' %}"
+          ><i class="bi bi-box-arrow-left f-20"></i> Logout</a
+        >
+      </div>
+    </div>
+    <div class="col-md-10 text-dark">{% block main_content %} {% endblock %}</div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock scripts %}

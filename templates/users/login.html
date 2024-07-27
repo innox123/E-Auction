@@ -1,0 +1,102 @@
+{% extends "../base.html" %} 
+{% load static %} 
+{% block title %} Sign In {% endblock title %} {% block content %} 
+
+{% if error_message %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <div class="d-flex align-items-center">
+    <svg
+    class="text-danger"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.2em"
+      height="1.2em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    <span class="pl-2">{{ error_message}}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} 
+
+    <div class="container-fluid my-4 my-md-4">
+      <div class="d-flex align-items-center pt-0 pt-md-3 px-0">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-4 mx-auto">
+            <div class="text-left py-5 px-4 px-sm-5 border">
+              <h4>Hello! let's get started</h4>
+              <h6 class="fw-light">Sign in to continue.</h6>
+              <form id="msform" class="pt-3" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-form-label" for="username">Username Or Phone Number(+250) <span class="text-danger">*</span></label>
+                  <input type="text" name="username" class="form-control"  placeholder="+250" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="password">Password <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+              
+                <div class="my-3 d-flex justify-content-between align-items-center">
+                  <div class="form-check">
+                    <label class="form-check-label text-muted">
+                      <input type="checkbox" class="form-check-input">
+                      Keep me signed in
+                    </label>
+                  </div>
+                  <a href="{% url 'password_reset' %}" class="auth-link text-black">Forgot password?</a>
+                </div>
+                  <div class="my-3">
+                  <button id="submit-btn" class="btn btn-primary btn-sm btn-block" type="submit">
+                    <div class="d-inline-flex justify-content-center align-items-center">
+                        <span id="btn-content">SignIn</span> <div class="loader"></div>
+                    </div>
+                  </button>
+                </div>
+                <div class="text-center mt-5 fw-light">
+                  Don't have an account? <a href="{% url 'register' %}" class="text-primary">Create New Account</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+
+
+{% endblock %} 
+
+{% block scripts %}
+<script src="{% static 'js/form.js' %}" defer></script>
+{% endblock scripts %}

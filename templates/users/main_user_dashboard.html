@@ -1,0 +1,239 @@
+{% extends "./userAdminWrapper.html" %} {% load static %} 
+{% block main_content%}
+  <div class="card mt-3 pb-3 text-uppercase">
+    logged as : {{ user.first_name}} {{ user.last_name}}
+  </div>
+    <div class="row">
+        <!-- Earnings (Monthly) Card Example -->
+         <div class="col-md-4 mb-4">
+          <div class="card  border h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col">
+                  <div
+                    class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+                  >
+                    Won vehicle
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">
+                    {{number_of_complete_transactions}}
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <i
+                    class="fa fa-trophy fa-2x text-gray-300"
+                    aria-hidden="true"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-md-4 mb-4">
+          <div class="card  border h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div
+                    class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+                  >
+                    watchlist
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">
+                    {{watch_count}}
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <i
+                    class="fa fa-heart fa-2x text-gray-300"
+                    aria-hidden="true"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-md-4 mb-4">
+          <div class="card  border h-100">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div
+                    class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+                  >
+                    Notifications
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">
+                    {{user_notif_count}}
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <i
+                    class="fa fa-bell fa-2x text-gray-300"
+                    aria-hidden="true"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <h5>Incomplete & Wait Approval Transactions</h5>
+      </div>
+      {% if registration_transaction %}
+       <div class="col-10">
+      <div class="card-border">
+        <div class="card-body">
+          <div class="widget-49">
+            <div class="widget-49-title-wrapper">
+              <div class="widget-49-date-primary">
+                <span class="widget-49-date-day"
+                  >{{registration_transaction.user.date_joined|date:"d"}}</span
+                >
+                <span class="widget-49-date-month"
+                  >{{registration_transaction.user.date_joined|date:"F"}}</span
+                >
+              </div>
+              <div class="widget-49-meeting-info">
+                Transaction Id:  {{ registration_transaction.id }}
+                <span class="widget-49-pro-title text-danger"
+                  >Status : Incomplete Registration Payment</span
+                >
+                <span class="widget-49-meeting-time"
+                  >Amount:  {{ registration_transaction.amount }} RWF</span
+                >
+              </div>
+            </div>
+            <p class="pt-2">Pay this amount to be able to join bidding room and become our potential customer <br>
+            This amount of money is paid by using online payment of this system.
+            </p>
+            <div class="pt-3">
+
+                   <form
+          method="POST"
+          action="https://checkout.flutterwave.com/v3/hosted/pay"
+        >
+          {% csrf_token %}
+          <input
+            type="hidden"
+            name="public_key"
+            value="FLWPUBK_TEST-9430b8b99f6d4689a438044b98cd60b9-X"
+          />
+          <input type="hidden" name="tx_ref" value="albrwte7we87we" />
+          <input type="hidden" name="amount" value="{{ registration_transaction.amount}}" />
+          <input type="hidden" name="currency" value="RWF" />
+          <input
+            type="hidden"
+            name="redirect_url"
+            value="https://tops-cardinal-horribly.ngrok-free.app/success/{{ registration_transaction.id }}/"
+          />
+          <input type="hidden" name="meta[token]" value="54" />
+          <input
+            type="hidden"
+            name="customer[name]"
+            value="{{ registration_transaction.user.first_name}} {{ registration_transaction.user.last_name}}"
+          />
+          <input
+            type="hidden"
+            name="customer[email]"
+            value="{{ registration_transaction.user.email }}"
+          />
+          <input
+            type="hidden"
+            name="payment_options"
+            value="card mobilemoneyrwanda"
+          />
+          <input
+            type="hidden"
+            name="configurations[session_duration]"
+            value="10"
+          />
+          <input
+            type="hidden"
+            name="configurations[max_retry_attempt]"
+            value="5"
+          />
+          <button
+            type="submit"
+            id="start-payment-button"
+            class="btn btn-success btn-block"
+          >
+          Complete Registration
+          </button>
+        </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% for transaction in transactions %}
+    <div class="col-10">
+      <div class="card-border">
+        <div class="card-body">
+          <div class="widget-49">
+            <div class="widget-49-title-wrapper">
+              <div class="widget-49-date-primary">
+                <span class="widget-49-date-day"
+                  >{{transaction.timestamp|date:"d"}}</span
+                >
+                <span class="widget-49-date-month"
+                  >{{transaction.timestamp|date:"F"}}</span
+                >
+              </div>
+              <div class="widget-49-meeting-info">
+                Transaction Id {{transaction.id}}
+                Customer Names: {{ transaction.user.first_name }} {{ transaction.user.last_name }} 
+                {% if not transaction.is_completed %}
+                <span class="widget-49-pro-title text-danger"
+                  >Status : Incomplete payment</span
+                >
+                {% else %}
+                   <span class="widget-49-pro-title text-success"
+                  >Status : Wait for payment approval.</span
+                >
+                {% endif %}
+                <span class="widget-49-meeting-time"
+                  >Amount: {{transaction.amount}} RWF</span
+                >
+              </div>
+            </div>
+            <ul style="list-style: none;" class="widget-49-meeting-points">
+              <li class="widget-49-meeting-item">
+                <span>Vehicle Name : {{ transaction.item.name }}</span>
+              </li>
+              <li class="widget-49-meeting-item">
+                <span>Vehicle Id :{{ transaction.item.vehicle_id }}</span>
+              </li>
+              <li class="widget-49-meeting-item">
+                <span>Plate Number : {{ transaction.item.plate_number}}</span>
+              </li>
+              <li class="widget-49-meeting-item">
+
+                <span
+                  >Complete the transaction on time this session has only 24 hours.
+                  </span
+                >
+              </li>
+            </ul>
+            <div class="pt-3">
+              {% if not transaction.is_completed %}
+              <a
+                class="btn btn-success"
+                href="{% url 'payments' transaction_id=transaction.id %}"
+              >
+                Complete Payment</a
+              >
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  {% endblock %}

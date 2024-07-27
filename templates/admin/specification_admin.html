@@ -1,0 +1,187 @@
+{% extends "./base.html" %}
+{% load static %} 
+{% block content %}
+{% for message in messages %}
+<div
+  class="alert alert-{{message.tags}} alert-dismissible fade show"
+  role="alert"
+>
+  <div class="d-flex align-items-center">
+    {% if message.tags == "error" %}
+    <svg
+      class="text-danger"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    {% elif message.tags == "success" %}
+
+    <svg
+      class="text-success"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.2em"
+      height="1.2em"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="m10.6 13.8l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.9q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+      />
+    </svg>
+
+    {% endif %}
+    <span class="pl-2">{{ message }}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+<!-- task result -->
+<div class="col-xl-12 col-md-12">
+  <div class="card table-card">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table
+          id="specifications-table"
+          class="table table-striped my-4"
+        >
+          <thead>
+            <tr>
+              <th>VEHICLE NAME</th>
+              <th>BRAND</th>
+              <th>MODEL</th>
+              <th>YEAR</th>
+              <th>ENGINE</th>
+              <th>TORQUE</th>
+              <th>FUEL CAPACITY</th>
+              <th>POWER</th>
+              <th>MANAGER</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for spec in specs %}
+            <tr>
+              <td>{{ spec.item.item.vehicle_name }}</td>
+              <td>{{ spec.brand }}</td>
+              <td>{{ spec.model }}</td>
+              <td>{{ spec.year }}</td>
+              <td>{{ spec.engine }}</td>
+              <td>{{ spec.max_torque }}</td>
+              <td>{{ spec.fuel_capacity }}</td>
+              <td>{{ spec.power }}</td>
+              
+              <td>
+                <div class="d-inline-flex">
+                 <button data-toggle="modal" data-target="#modal-{{spec.item.id}}" type="button" class="btn btn-sm btn-primary m-l-10">
+                    Edit
+                  </button>
+                </div>
+              </td>
+              
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for spec in specs %}
+<div
+  id="modal-{{spec.item.id}}"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="{{spec.id}}Label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="{{spec.id}}Label">Add Image to vehicle.</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          action="{% url 'update-specifications' spec_id=spec.id %}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+              <div class="form-group">
+                <label class="floating-label" for="brandd">Brand</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="{{ spec.brand}}" >
+            </div>
+                <div class="form-group">
+                <label class="floating-label" for="model">Model</label>
+                <input type="text" class="form-control" name="model" value="{{ spec.model }}" id="model">
+            </div>
+                <div class="form-group">
+                <label class="floating-label" for="year">Year</label>
+                <input type="number" name="year" value="{{ spec.year}}" class="form-control" id="year">
+            </div>
+                <div class="form-group">
+                <label class="floating-label" for="engine">Engine</label>
+                <input type="text" class="form-control" id="engine" name="engine" value="{{ spec.engine}}">
+            </div>
+                <div class="form-group">
+                <label class="floating-label" for="max_torque">Max torque</label>
+                <input type="text" class="form-control" id="max_torque" name="max_torque" value="{{ spec.max_torque }}">
+            </div>
+                  <div class="form-group">
+                <label class="floating-label" for="fuel_capacity">Fuelcapacity</label>
+                <input type="text" class="form-control" id="fuel_capacity" name="fuel_capacity" value="{{ spec.fuel_capacity }}">
+            </div>
+                  <div class="form-group">
+                <label class="floating-label" for="power">Power</label>
+                <input type="text" class="form-control" id="power" name="power" value="{{ spec.power }}">
+            </div>
+
+          <button class="btn btn-primary" type="submit">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- [ demo-modal ] end -->
+{% endblock content %}

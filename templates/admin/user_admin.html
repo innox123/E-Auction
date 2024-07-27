@@ -1,0 +1,146 @@
+{% extends "./base.html" %}{% load static %} {% block content %}
+
+
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+  <div class="d-flex align-items-center">
+    {% if message.tags == "error" %}
+    <svg
+    class="text-danger"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    {% elif message.tags == "success" %}
+
+    <svg class="text-success" xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
+	<path fill="currentColor" d="m10.6 13.8l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.9q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22" />
+</svg>
+
+    {% endif %}
+    <span class="pl-2">{{ message }}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+<div class="card p-4">
+      <div class="table-responsive">
+        <table id="user-table" class="table table-striped my-4">
+          <thead>
+            <tr>
+              <th>FULL NAME</th>
+              <th>USERNAME</th>
+              <th>EMAIL</th>
+              <th>PHONE NUMBER</th>
+              <th>ACTIVE</th>
+              <th>SUPERVISIOR</th>
+              <th>VERIFIED</th>
+              <th>MANAGER</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{user.first_name}} {{ user.last_name }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{user.phone_number}}</td>
+              {% if user.is_active %}
+              <td>
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </td>
+
+              {% else %}
+              <td>
+                <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              </td>
+              {% endif %} 
+              
+              {% if user.is_superuser %}
+              <td>
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </td>
+              {% else %}
+                <td>
+                <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              </td>
+              {% endif %}
+             
+                {% if user.is_superuser %}
+               <td>
+                <i class="fa fa-lock" aria-hidden="true"></i>
+              </td>
+              {% else %}
+
+                {% if user.is_verified %}
+              <td>
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </td>
+              {% else %}
+                <td>
+                <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              </td>
+              {% endif %}
+              {% endif %}
+              <td>
+                <div class="d-inline-flex align-items-center">
+                      <a  href="{% url 'update-user-admin' user_id=user.id %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i>
+</a>
+                     <form
+                      class="pl-2"
+                        action="{% url 'user-delete' pk=user.id %}"
+                        method="post"
+                      >
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+
+                        </button>
+                      </form>
+                      {% if not user.is_verified and not user.is_superuser %}
+                      <button class="btn btn-sm btn-primary ml-2">view Card</button>
+                    <button class="btn btn-sm btn-primary ml-2">Verify</button>
+                   
+                      {% endif %}
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+</div>
+
+{% endblock content %}

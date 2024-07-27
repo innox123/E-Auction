@@ -1,0 +1,45 @@
+{% extends "./base.html" %} {% load static %} {% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="col-xl-12 col-md-12">
+  <div class="card table-card">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table id="bid-table" class="table table-striped my-4">
+          <thead>
+            <tr>
+              <th>VEHICLE NAME</th>
+              <th>PLATE NUMBER</th>
+              <th>BIDDER NAME</th>
+              <th>AMOUNT</th>
+              <th>DATE</th>
+              <th>MANAGEMENT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bid in bids %}
+            <tr>
+              <td>{{ bid.item.name }}</td>
+              <td>{{bid.item.plate_number}}</td>
+              <td>{{bid.user.username}}</td>
+              <td>{{bid.amount}}</td>
+              <td>{{bid.bidded_at}}</td>
+              <td>
+                <form action="{% url 'delete-bid' pk=bid.id %}" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-danger btn-sm" type="submit">
+                    Remove
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+
+  {% endblock content %}
+</div>

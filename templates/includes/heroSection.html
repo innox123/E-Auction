@@ -1,0 +1,129 @@
+{% load static %}
+<div class="mt-5">
+  <div class="container mb-4">
+    <div class="row align-items-center py-4 rounded-lg">
+      <div class="col-lg-7 pl-2 pl-md-3 main-hero-section">
+        <h1 class="display-4">
+          Rwanda National Police <span class="text-primary">E-auction.</span>
+        </h1>
+        <p class="col-lg-10 px-0 text-muted">
+          Rwanda National Police is dedicated to deliver high quality service,
+          accountability and transparency, safeguard the rule of law and provide
+          safe and crime free environment for all.
+        </p>
+        <button
+          data-toggle="modal"
+          data-target="#modal1"
+          class="btn btn-primary"
+        >
+          Check Available Auctions &nbsp;<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+
+        </button>
+      </div>
+      <div class="col-md-10 mx-auto col-lg-5 mt-4 mt-md-0">
+        <!-- CUSTOM BLOCKQUOTE -->
+        <blockquote
+          class="blockquote blockquote-custom bg-white p-4 card-border rounded"
+        >
+          <div class="blockquote-custom-icon bg-primary shadow-sm">
+            <i class="fa fa-mobile text-light fa-2x" aria-hidden="true"></i>
+          </div>
+          <div class="mt-3">
+            <h3>*384*7167#</h3>
+            <h5>Offline Mobile Services</h5>
+            <ol class="h6">
+              <li class="mb-2">Available Auctions</li>
+              <li class="mb-2">Account Details Check</li>
+              <li class="mb-2">Pending Approvals</li>
+              <li class="mb-2">Incomplete Transactions</li>
+              <li>Customer Support</li>
+            </ol>
+          </div>
+        </blockquote>
+        <!-- END -->
+      </div>
+    </div>
+    <hr />
+  </div>
+</div>
+
+<div
+  id="modal1"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-fullscreen" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1>Search and Filter Auctions</h1>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-5">
+                  <input class="form-control" placeholder="Search" />
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-primary">
+                Sort by name
+              </button>
+                              <button class="btn btn-primary">
+                Sort by title
+              </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-2">
+           {% for auction in auctions %}
+           <div class="list-group-item mb-2">
+            <div class="row">
+            <div class="col-md-9">
+              <h4 class="list-group-item-heading name ">Director</h4>
+              <p class="list-group-item-text title"><i class="fa fa-user" aria-hidden="true"></i> &nbsp;{{ auction.staff }} <br>
+                Vehicles ( {{ auction.num_items }} )
+              </p>
+            </div>
+            <div class="col-md-3">
+              <div class="expertise">
+                <div class="read-more">
+                  {% if auction.end_at > now %}
+                   <a href="{% url 'all-items' auction_id=auction.id %}" type="button" class="btn btn-success btn-more mb-2">Explore Vehicles &nbsp; <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+                   {% else %}
+                    <button type="button" disabled class="btn btn-primary btn-more">Auction Closed &nbsp; <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                     {% endif %}
+                </div>
+                {% if auction.end_at > now %}
+                  <p class="text-success"><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;  {{ auction.start_at.date }}<br>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp; {{ auction.start_at|time:"H:i" }} END {{ auction.end_at|time:"H:i" }}
+                  </p>
+                {% else %}
+                  <p><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;  {{ auction.start_at.date }}<br>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp; {{ auction.start_at|time:"H:i" }} END {{ auction.end_at|time:"H:i" }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

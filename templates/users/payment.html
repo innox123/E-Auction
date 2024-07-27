@@ -1,0 +1,159 @@
+{% extends "./userAdminWrapper.html" %} {% load static %} {% block title %}
+Payment Gateway {% endblock %} {% block main_content%}
+<div class="row col-12 mt-2">
+  <div class="col-md-7 col-12 px-3">
+    <div class="row">
+      <div class="col-md-12 mb-3 border pt-2 px-3">
+        <div class="row box-right">
+          <div class="col-md-8 ps-0">
+            <p class="ps-3 textmuted h6 mb-0">
+              TOTAL AMOUNT: {{transaction.amount}} RWF
+            </p>
+            <p class="badge rounded-pill bg-light text-success text-uppercase">
+              for {{transaction.item.name}}
+            </p>
+          </div>
+          <div class="col-md-4">
+            <p class="p-blue">
+              <span class="bi bi-circle-fill p-r-5 text-success f-10"></span
+              >Pending ...
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 card-border p-3">
+        <div class="box-right">
+          <div class="d-flex flex-column mb-2">
+            <h5 class="mb-2">Create Invoice Summary</h5>
+            <ol class="list-group">
+              <li class="d-flex mt-4 justify-content-between align-items-start mb-2">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Full Name</div>
+                  {{ transaction.user.first_name}} {{ transaction.user.last_name}}
+                </div>
+                <span class="badge text-bg-primary rounded-pill"
+                  ><i
+                    class="fa fa-user text-primary fa-lg"
+                    aria-hidden="true"
+                  ></i>
+                </span>
+              </li>
+              <li class="d-flex mt-2 justify-content-between align-items-start mb-2">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Address</div>
+                 {{transaction.user.address}}
+                </div>
+                <span class="badge text-bg-primary rounded-pill">
+                  <i
+                    class="fa fa-map-marker text-primary fa-lg"
+                    aria-hidden="true"
+                  ></i
+                ></span>
+              </li>
+              <li class="d-flex mt-2 justify-content-between align-items-start mb-2">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Email</div>
+                 {{ transaction.user.email }}
+                </div>
+                <span class="badge text-bg-primary rounded-pill">
+                  <i class="fa fa-envelope text-primary" aria-hidden="true"></i
+                ></span>
+              </li>
+              <li class="d-flex mt-2 justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Phone Number</div>
+                   {{ transaction.user.phone_number }}
+                </div>
+                <span class="badge text-bg-primary rounded-pill"
+                  ><i
+                    class="fa fa-phone-square text-primary fa-lg"
+                    aria-hidden="true"
+                  ></i
+                ></span>
+              </li>
+            </ol>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+{% if not transaction.is_completed %}
+        <form
+          method="POST"
+          class="mt-4"
+          action="https://checkout.flutterwave.com/v3/hosted/pay"
+        >
+          {% csrf_token %}
+          <input
+            type="hidden"
+            name="public_key"
+            value="FLWPUBK_TEST-9430b8b99f6d4689a438044b98cd60b9-X"
+          />
+          <input type="hidden" name="tx_ref" value="albrwte7we87we" />
+          <input type="hidden" name="amount" value="{{ transaction.amount}}" />
+          <input type="hidden" name="currency" value="RWF" />
+          <input
+            type="hidden"
+            name="redirect_url"
+            value="https://tops-cardinal-horribly.ngrok-free.app/success/{{invoice.transaction.id}}"
+          />
+          <input type="hidden" name="meta[token]" value="54" />
+          <input
+            type="hidden"
+            name="customer[name]"
+            value="{{ transaction.user.first_name}} {{ transaction.user.last_name}}"
+          />
+          <input
+            type="hidden"
+            name="customer[email]"
+            value="{{ transaction.user.email }}"
+          />
+          <input
+            type="hidden"
+            name="payment_options"
+            value="card mobilemoneyrwanda"
+          />
+          <input
+            type="hidden"
+            name="configurations[session_duration]"
+            value="10"
+          />
+          <input
+            type="hidden"
+            name="configurations[max_retry_attempt]"
+            value="5"
+          />
+          <button
+            type="submit"
+            id="start-payment-button"
+            class="btn btn-success btn-block"
+          >
+            Online Payment
+          </button>
+        </form>
+        {% endif %}
+  </div>
+  <div class="col-md-5 px-3">
+    <div class="box-left">
+      <ul class="list-group">
+        <li class="list-group-item">VEHICLE SPECIFICATIONS</li>
+        <li class="list-group-item">Model {{ spec.model }}</li>
+        <li class="list-group-item">Engine {{ spec.engine }}</li>
+        <li class="list-group-item">Fuel Capacity {{ spec.fuel_capacity}}</li>
+        <li class="list-group-item">Power {{ spec.power }}</li>
+      </ul>
+        <div class="p-2 mt-2 card-border">
+          <p>If you use Bank or Mobile Money, You need to upload your Slip or receipt to approve your payment.</p>
+        </div>
+        <form class="my-3" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label for="">Upload Bank Slip:</label>
+          {{ form_request_payment.upload_bank_slip }}
+          <button name="form_request_approval" type="submit" class="btn btn-primary mt-2">Upload Slip</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

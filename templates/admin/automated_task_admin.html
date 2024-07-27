@@ -1,0 +1,98 @@
+{% extends "./base.html" %} {% load static %} {% block content %}
+<!-- task result -->
+<div class="col-xl-12 col-md-12">
+  <div class="card table-card">
+    <div class="card-header">
+      <h4 class="text-uppercase">task results</h4>
+    </div>
+    <div class="card-body px-3">
+      <div class="table-responsive">
+        <table
+          id="task-result-table"
+          class="table table-sm table-hover mb-0"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <th>TASK NAME</th>
+              <th>STATUS</th>
+              <th>DONE AT</th>
+              <th>MANAGER</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in task_results %}
+            <tr>
+              <td>{{ result.task_name }}</td>
+              <td>{{ result.status }}</td>
+              <td>{{ result.date_done }}</td>
+              <td>
+                <form
+                  action="{% url 'delete-task-results' task_id=result.task_id %}"
+                  method="post"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- scheduled task -->
+<div class="col-xl-12 col-md-12">
+  <div class="card table-card">
+    <div class="card-header">
+      <h4 class="text-uppercase">scheduled tasks</h4>
+    </div>
+    <div class="card-body px-3">
+      <div class="table-responsive">
+        <table
+          id="task-table"
+          class="table table-sm table-hover mb-0"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <th>TASK NAME</th>
+              <th>ENABLED</th>
+              <th>RUN AT</th>
+              <th>RUN COUNTS</th>
+              <th>MANAGER</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in periodic_tasks %}
+            <tr>
+              <td>{{ task.task }}</td>
+              <td>{{ task.enabled }}</td>
+              <td>{{ task.last_run_at }}</td>
+              <td>{{ task.total_run_count }}</td>
+              <td>
+                <form
+                  action="{% url 'delete-periodic-tasks' name=task.name %}"
+                  method="post"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

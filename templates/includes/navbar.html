@@ -1,0 +1,107 @@
+{% load static %}
+
+<div class="container">
+  <div class="top_bar">
+    <div class="row">
+      <div class="col d-flex flex-wrap ">
+        <div class="top_bar_contact_item">
+          <div class="top_bar_icon">
+            <img
+              src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918577/phone.png"
+              alt=""
+            />
+          </div>
+          +250 788 311 155
+        </div>
+        <div class="top_bar_contact_item">
+          <div class="top_bar_icon">
+            <img
+              src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918597/mail.png"
+              alt=""
+            />
+          </div>
+          <a href="mailto:fastsales@gmail.com">info@police.gov.rw</a>
+        </div>
+        <div class="top_bar_content ml-auto">
+          <div class="top_bar_menu ml-0">
+            <ul class="standard_dropdown top_bar_dropdown">
+              <li>
+                <a href="#">English <span class="fa fa-angle-down"></span></a>
+                <ul class="list-group list-group-flush p-3">
+                  <li><a href="#">Ikinyarwanda</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="top_bar_user">
+            <div class="user_icon">
+              <img
+                src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg"
+                alt=""
+              />
+            </div>
+            {% if not user.is_authenticated %}
+            <div><a href="{% url 'register' %}">Register</a></div>
+            <div><a href="{% url 'login' %}">Sign in</a></div>
+            {% else %}
+            <div><a href="{% url 'logout' %}">Sign Out</a></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="">
+  <div class="container">
+    <nav  class="navbar navbar-expand-md p-0">
+      <div class="navbar-brand">
+          <img src="{% static 'images/rnp.png' %}" class="img-thumbnail" width="60px" height="60px" alt="" srcset="">
+      </div>
+
+      <button
+        class="navbar-toggler mr-3"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+       <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul
+          class="navbar-nav d-flex justify-content-center align-items-center  py-2  nav-tabs  pr-4"
+        >
+          <li class="nav-item">
+            <a href="{% url 'home' %}">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}">REGULATIONS</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}">FAQs</a>
+          </li>
+          <li>
+               {% if user.is_authenticated %}
+          <ul class="standard_dropdown  top_bar_dropdown">
+            <li>
+              <a href="#">MY ACCOUNT<span class="fa fa-angle-down"></span></a>
+              <ul class="list-group list-group-flush p-4 mt-3">
+                <li class=""><a href="{% url 'dashboard' %}">DashBoard</a></li>
+                <li class="mt-3"><a href="{% url 'password_change' %}">Change Password</a></li>
+                <li class="mt-3"><a href="{% url 'password_change' %}">Change Number</a></li>
+                <li class="mt-3"><a href="{% url 'logout' %}">Sign Out</a></li>
+              </ul>
+            </li>
+          </ul>
+         {% endif %}
+          </li>
+           </ul>
+      </div>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+{% extends "./userAdminWrapper.html" %} 
+{% load static %} 
+{% load humanize %}
+{% block title %}Notifications{% endblock title %}
+ {% block main_content%}
+<div class="row">
+  <div class="col-md-10">
+    <div class="py-3">
+      <h5>Notifications  ( {{ user_notif_count }} ) </h5>
+    </div>
+    <ul class="list-group">
+      {% for notification in notifications_page %}
+      <li class="list-group-item  mb-3">
+        <div class="d-flex w-100 justify-content-between">
+          <div class="div">
+          <h6 class="mb-1"><i class="fa fa-commenting text-success" aria-hidden="true"></i></h6>
+            <p class="mb-1">
+              {{notification.message }} </p>
+        <small class="text-body-secondary">from rwanda national police e-auction.</small>
+        <small style="font-weight: 600;">{{notification.timestamp|naturaltime}}.</small>
+          </div>
+          <form
+              method="post"
+              action="{% url 'delete_notification' notification.id %}"
+            >
+              {% csrf_token %}
+              <button class="btn btn-sm" type="submit">
+               <i class="fa fa-trash fa-lg text-danger" aria-hidden="true"></i>
+              </button>
+            </form>
+           
+        </div>
+      </li>
+    </ul>
+     {% endfor %}
+    <div class="list-group">
+      
+      
+    </div>
+      <nav aria-label="Pagination" class="py-4">
+  <ul class="pagination justify-content-center">
+    {% if notifications_page.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1">First</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ notifications_page.previous_page_number }}">Previous</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">First</span>
+    </li>
+    <li class="page-item disabled">
+      <span class="page-link">Previous</span>
+    </li>
+    {% endif %}
+
+    <li class="page-item {% if notifications_page.number == page_number %}active{% endif %}">
+      <span class="page-link">{{ notifications_page.number }}</span>
+    </li>
+
+    {% if notifications_page.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ notifications_page.next_page_number }}">Next</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ notifications_page.paginator.num_pages }}">Last</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">Next</span>
+    </li>
+    <li class="page-item disabled">
+      <span class="page-link">Last</span>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+  </div>
+</div>
+
+{% endblock %}

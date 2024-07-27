@@ -1,0 +1,183 @@
+{% extends "./base.html" %} {% load static %} {% load humanize %}   {% block content %} 
+{% for message in messages %}
+<div
+  class="alert alert-{{message.tags}} alert-dismissible fade show"
+  role="alert"
+>
+  <div class="d-flex align-items-center">
+    {% if message.tags == "error" %}
+    <svg
+      class="text-danger"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 26 26"
+    >
+      <g fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M13.5 26C20.404 26 26 20.404 26 13.5S20.404 1 13.5 1S1 6.596 1 13.5S6.596 26 13.5 26m0-2C19.299 24 24 19.299 24 13.5S19.299 3 13.5 3S3 7.701 3 13.5S7.701 24 13.5 24"
+          clip-rule="evenodd"
+          opacity="0.2"
+        />
+        <g opacity="0.2">
+          <path
+            fill-rule="evenodd"
+            d="M14 6a2 2 0 0 1 2 2v7a2 2 0 1 1-4 0V8a2 2 0 0 1 2-2"
+            clip-rule="evenodd"
+          />
+          <path d="M16 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </g>
+        <path
+          fill-rule="evenodd"
+          d="M13.25 5.25A.75.75 0 0 1 14 6v9a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75"
+          clip-rule="evenodd"
+        />
+        <path d="M14.5 19.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
+        <path
+          fill-rule="evenodd"
+          d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5"
+          clip-rule="evenodd"
+        />
+      </g>
+    </svg>
+    {% elif message.tags == "success" %}
+
+    <svg
+      class="text-success"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.7em"
+      height="1.7em"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="m10.6 13.8l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.9q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+      />
+    </svg>
+
+    {% endif %}
+    <span class="p-l-10">{{ message }}</span>
+  </div>
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+
+<div class="col-xl-12 col-md-12">
+   <div class="card table-card">
+    <div class="card-body p-4">
+      WON VEHICLE TRANSACTIONS
+      <div class="table-responsive">
+        <table
+          class="table table-sm table-striped my-4"
+        >
+          <thead>
+            <tr>
+              <th>Vehicle Name</th>
+              <th>Full name</th>
+              <th>Amount</th>
+              <th>Paid</th>
+              <th>Method</th>
+              <th>Date</th>
+              <th>Approval</th>
+              <th>Manager</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for transaction in transactions %}
+            <tr>
+               
+              <td>{{ transaction.item.name }}</td>
+               <td>{{ transaction.user.first_name }} {{ transaction.user.last_name }}</td>
+              <td>{{ transaction.amount }} RWF</td>
+              {% if transaction.is_completed %}
+              <td>
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </td>
+              {% else %}
+                <td>
+                <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              </td>
+              {% endif %}
+               <td>{{ transaction.payment_method }}</td>
+               <td>{{ transaction.timestamp|naturaltime}}</td>
+                {% if transaction.request_approval %}
+                    <td>
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </td>
+                {% else %}
+                 <td>
+                <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              </td>
+                {% endif %}
+                <td>
+                <div class="d-flex">
+                    {% if transaction.upload_bank_slip %}
+                    <a class="btn btn-light btn-sm" href="{% url 'download_bank_slip' transaction.id %}"><i class="fa fa-download" aria-hidden="true"></i></a>
+              
+                 
+                {% if transaction.request_approval %}
+                  <button
+                    class="btn btn-sm btn-success ml-2"
+                  >
+                    Approved
+                  </button>
+                  {% else %}
+                    <button
+                    data-toggle="modal"
+                    data-target="#modal-{{ transaction.id }}"
+                    class="btn btn-sm btn-primary ml-2"
+                  >
+                    Approve 
+                  </button>
+
+                  {% endif %}
+                    {% endif %}
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for transaction in transactions %}
+<div
+  id="modal-{{ transaction.id }}"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="PaymentLabel">transaction id: {{ transaction.id }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% if not transaction.request_approval %}
+         <form action="{% url 'approve_payement' transaction_id=transaction.id %}" method="post">
+            {% csrf_token %}
+          <button class="btn btn-primary btn-block">Confirm Approve Payment</button>
+           </form>
+           {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock content %}
