@@ -30,7 +30,6 @@ client = Client(user_account_sid, user_auth_token)
 
 
 
-
 @unauthenticated_user
 def get_signup_page(request):
     if request.method == 'POST':    
@@ -38,15 +37,15 @@ def get_signup_page(request):
         if form.is_valid():
             user = form.save(commit=False)
             phone_number = form.cleaned_data.get('phone_number')
-            user.is_active = False
+            user.is_active = True
             form.save()
-            request.session['user_id'] = user.id
-            request.session['phone_number'] = phone_number
-            client.verify.v2.services(service_sid).verifications.create(
-                to=phone_number, channel="sms"
-            )
+            # request.session['user_id'] = user.id
+            # request.session['phone_number'] = phone_number
+            # client.verify.v2.services(service_sid).verifications.create(
+            #     to=phone_number, channel="sms"
+            # )
             messages.success(request, "Account have been created Successfully")
-            return redirect('verify_code')
+            return redirect('home')
     else:
         form =CustomUserCreationForm()
     return render(request, 'users/register.html' ,{'form':form})
