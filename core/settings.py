@@ -194,8 +194,8 @@ AUTHENTICATION_BACKENDS = [
 # CELERY CONFIGURATIONS
 
 
-CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@redis-12898.c98.us-east-1-4.ec2.redns.redis-cloud.com:12898/0'
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+# CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@redis-12898.c98.us-east-1-4.ec2.redns.redis-cloud.com:12898/0'
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 # CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
