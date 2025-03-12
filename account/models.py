@@ -4,7 +4,7 @@ from django.db import models
 import uuid
 
 class User(AbstractUser):
-    phone_number = models.CharField(_('phone number'),max_length=13, unique=True)
+    phone_number = models.CharField(_('phone number'),max_length=13, unique=True, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     has_mfa = models.BooleanField(default=False)
     address = models.CharField(_('address'),max_length=100)
