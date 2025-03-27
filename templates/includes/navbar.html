@@ -23,7 +23,7 @@
           <a href="mailto:fastsales@gmail.com">info@police.gov.rw</a>
         </div>
         <div class="top_bar_content ml-auto">
-          <div class="top_bar_menu ml-0">
+          <!-- <div class="top_bar_menu ml-0">
             <ul class="standard_dropdown top_bar_dropdown">
               <li>
                 <a href="#">English <span class="fa fa-angle-down"></span></a>
@@ -32,7 +32,7 @@
                 </ul>
               </li>
             </ul>
-          </div>
+          </div> -->
           <div class="top_bar_user">
             <div class="user_icon">
               <img
@@ -81,9 +81,6 @@
           </li>
           <li class="nav-item">
             <a href="{% url 'home' %}">REGULATIONS</a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'home' %}">FAQs</a>
           </li>
           <li>
                {% if user.is_authenticated %}
