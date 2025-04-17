@@ -129,7 +129,6 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{% url 'vehicle-admin' %}">View Captured Vehicles</a>
               <a class="collapse-item" href="{% url 'add-vehicle' %}">Register Vehicle</a>
-              <a class="collapse-item" href="#">Upload Excel</a>
             </div>
           </div>
         </li>
@@ -155,10 +154,10 @@
               <a class="collapse-item" href="{% url 'specification-admin' %}"
                 >View</a
               >
-              <a class="collapse-item" href="#"
+              <!-- <a class="collapse-item" href="#"
                 >Download pdf</a
               >
-              <a class="collapse-item" href="#">Export Excel</a>
+              <a class="collapse-item" href="#">Export Excel</a> -->
             </div>
           </div>
         </li>
@@ -196,35 +195,6 @@
           </div>
         </li>
 
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#Transactions"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <i class="fa fa-cart-plus text-light"></i>
-            <span>Transactions</span>
-          </a>
-          <div
-            id="Transactions"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{% url 'transaction-admin' %}"
-                >View</a
-              >
-                <a class="collapse-item" href="{% url 'transaction-admin' %}"
-                >Export As Excel</a
-              >
-              
-            </div>
-          </div>
-        </li>
         <li class="nav-item">
           <a
             class="nav-link collapsed"
@@ -413,84 +383,6 @@
                       </div>
                       <div class="col-auto">
                           <i class="fa fa-car fa-3x text-gray-300" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-                  <!-- Pending Requests Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div
-                          class="text-xs font-weight-bold text-warning text-uppercase mb-1"
-                        >
-                          Unaproved Payment transactions
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{ un_approved_transaction }}
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fa fa-dollar fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                       <!-- Pending Requests Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div
-                          class="text-xs font-weight-bolder text-success text-uppercase mb-1"
-                        >
-                          Total Income
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{ total_amount }} RWF
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fa fa-dollar fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                            <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div
-                          class="text-xs font-weight-bold text-info text-uppercase mb-1"
-                        >
-                          Total invoices
-                        </div>
-                        <div class="row no-gutters align-items-center">
-                          <div class="col-auto">
-                            <div
-                              class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                            >
-                             {{invoice_count}}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i
-                          class="fa fa-clipboard fa-2x text-gray-300"
-                          aria-hidden="true"
-                        ></i>
                       </div>
                     </div>
                   </div>
