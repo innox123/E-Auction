@@ -63,7 +63,7 @@ def item_details_view(request, pk):
     number_of_bids = Bid.objects.filter(item=item).count()
     uploaded_images = ItemImage.objects.filter(item=item)
     current_time = timezone.now()
-    condition_to_bid = request.user.is_authenticated and item.auction.start_at < current_time and item.auction.end_at > current_time and request.user.is_verified
+    condition_to_bid = request.user.is_authenticated and item.auction.start_at < current_time and item.auction.end_at > current_time
     context = {
         'item': item,
         'uploaded_images': uploaded_images,

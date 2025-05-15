@@ -44,9 +44,9 @@ class Item(models.Model):
     def max_price(self):
         return int((self.reverse_price * 10)/ 100)
     
-    @property
-    def min_price(self):
-        return int(self.max_price / 3)
+    # @property
+    # def min_price(self):
+    #     return int(self.max_price / 3)
     
     @property
     def auction_status(self):
