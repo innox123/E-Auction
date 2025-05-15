@@ -41,12 +41,12 @@ class Item(models.Model):
     primary_image = models.ImageField(upload_to='uploads/primary_images/')
 
     @property
-    def max_price(self):
-        return int((self.reverse_price * 10)/ 100)
+    def min_price(self):
+        return int((self.reverse_price / 10))
     
-    # @property
-    # def min_price(self):
-    #     return int(self.max_price / 3)
+    @property
+    def max_price(self):
+        return int(self.reverse_price)
     
     @property
     def auction_status(self):

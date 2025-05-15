@@ -173,7 +173,7 @@ document.querySelector("#place-bid").onclick = function () {
   </span>
   `;
   const amount = document.querySelector("#amount").value;
-  if (amount < minPrice || amount > maxPrice) {
+  if (amount < minPrice) {
     document.querySelector("#place-bid").innerHTML = "Place Bid Now";
     document.querySelector(".item-detail-field-error").style = "display: block";
     setTimeout(function () {
